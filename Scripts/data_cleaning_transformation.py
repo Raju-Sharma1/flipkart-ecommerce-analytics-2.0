@@ -149,48 +149,111 @@ df.loc[df["brand"] == "Prestige", "category"] = "Home & Kitchen"
 # ----------------------------------------------------------
 
 # Some brands manufacture products across multiple
-# categories. Product names are used to determine the
-# appropriate category.
+# product categories. Product names are used to
+# determine the appropriate category.
 
-classification_rules = {
+# Philips:
+# Products containing "Ultra" or "Series" are classified
+# as Electronics, while products containing "Edition",
+# "Prime", or "Model" are classified as Home & Kitchen.
 
-    "Philips": {
-        "Electronics": "Ultra|Series",
-        "Home & Kitchen": "Edition|Prime|Model"
-    },
+# Mask 1: rows where brand is Philips
+is_philips = flipkart['brand'] == 'Philips'
 
-    "Apple": {
-        "Mobiles": "Series|Ultra",
-        "Electronics": "Edition|Prime|Model"
-    },
+# Mask 2: product_name contains "Ultra" or "Series"
+electronics_mask = flipkart['product_name'].str.contains('Ultra|Series', case=False, na=False)
 
-    "Samsung": {
-        "Mobiles": "Series|Ultra",
-        "Electronics": "Edition|Prime|Model"
-    },
+# Mask 3: product_name contains "Edition", "Prime", or "Model"
+home_kitchen_mask = flipkart['product_name'].str.contains('Edition|Prime|Model', case=False, na=False)
 
-    "Redmi": {
-        "Mobiles": "Series|Ultra",
-        "Electronics": "Edition|Prime|Model"
-    }
-}
+# Apply the updates
+flipkart.loc[is_philips & electronics_mask, 'category'] = 'Electronics'
+flipkart.loc[is_philips & home_kitchen_mask, 'category'] = 'Home & Kitchen'
 
-for brand, rules in classification_rules.items():
 
-    brand_mask = df["brand"] == brand
+# Apple:
+# Apple products containing "Series" or "Ultra" are
+# categorized as Mobiles. Products containing
+# "Edition", "Prime", or "Model" are categorized
+# as Electronics.
 
-    for category, pattern in rules.items():
+# Mask 1: rows where brand is Apple
+is_apple = flipkart['brand'] == 'Apple'
 
-        pattern_mask = df["product_name"].str.contains(
-            pattern,
-            case=False,
-            na=False
-        )
+# Mask 2: product_name contains "Series" or "Ultra"
+mobiles_mask = flipkart['product_name'].str.contains('Series|Ultra', case=False, na=False)
 
-        df.loc[
-            brand_mask & pattern_mask,
-            "category"
-        ] = category
+# Mask 3: product_name contains "Edition", "Prime", or "Model"
+electronics_mask = flipkart['product_name'].str.contains('Edition|Prime|Model', case=False, na=False)
+
+# Apply the updates
+flipkart.loc[is_apple & mobiles_mask, 'category'] = 'Mobiles'
+flipkart.loc[is_apple & electronics_mask, 'category'] = 'Electronics'
+
+
+# Redmi:
+# Redmi products are categorized using the same
+# product naming convention as Apple.
+
+# Mask 1: rows where brand is Redmi
+is_redmi = flipkart['brand'] == 'Redmi'
+
+# Mask 2: product_name contains "Series" or "Ultra"
+mobiles_mask = flipkart['product_name'].str.contains('Series|Ultra', case=False, na=False)
+
+# Mask 3: product_name contains "Edition", "Prime", or "Model"
+electronics_mask = flipkart['product_name'].str.contains('Edition|Prime|Model', case=False, na=False)
+
+# Apply the updates
+flipkart.loc[is_redmi & mobiles_mask, 'category'] = 'Mobiles'
+flipkart.loc[is_redmi & electronics_mask, 'category'] = 'Electronics'
+
+
+# Samsung:
+# Samsung products are categorized based on
+# product naming patterns.
+
+# Mask 1: rows where brand is Samsung
+is_samsung = flipkart['brand'] == 'Samsung'
+
+# Mask 2: product_name contains "Series" or "Ultra"
+mobiles_mask = flipkart['product_name'].str.contains('Series|Ultra', case=False, na=False)
+
+# Mask 3: product_name contains "Edition", "Prime", or "Model"
+electronics_mask = flipkart['product_name'].str.contains('Edition|Prime|Model', case=False, na=False)
+
+# Apply the updates
+flipkart.loc[is_samsung & mobiles_mask, 'category'] = 'Mobiles'
+flipkart.loc[is_samsung & electronics_mask, 'category'] = 'Electronics'
+
+
+# ----------------------------------------------------------
+# Brand-Level Category Standardization
+# ----------------------------------------------------------
+# These brands primarily manufacture products belonging
+# to a single category and are therefore standardized
+# accordingly.
+
+# Dell:
+flipkart.loc[flipkart['brand'] == 'Dell', 'category'] = 'Electronics'
+
+# Sony:
+flipkart.loc[flipkart['brand'] == 'Sony', 'category'] = 'Electronics'
+
+# HP:
+flipkart.loc[flipkart['brand'] == 'HP', 'category'] = 'Electronics'
+
+# Boat:
+flipkart.loc[flipkart['brand'] == 'Boat', 'category'] = 'Electronics'
+
+# Prestige:
+flipkart.loc[flipkart['brand'] == 'Prestige', 'category'] = 'Home & Kitchen'
+
+# Whirlpool:
+flipkart.loc[flipkart['brand'] == 'Whirlpool', 'category'] = 'Electronics'
+
+# LG:
+flipkart.loc[flipkart['brand'] == 'LG', 'category'] = 'Electronics'
 
 # ==========================================================
 # Save Processed Dataset
