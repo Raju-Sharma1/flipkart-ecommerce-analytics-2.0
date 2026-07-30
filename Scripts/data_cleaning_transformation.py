@@ -2,18 +2,27 @@
 # Flipkart Product Listings
 # Data Cleaning & Transformation
 #
-# This script performs the complete preprocessing workflow:
-# 1. Initial data assessment
-# 2. Missing value treatment
-# 3. Data standardization
-# 4. Data validation
-# 5. Category corrections using predefined business rules
+# This script prepares the raw dataset for analysis in
+# two phases:
+#
+# Phase 1: Data Preprocessing
+#   - Initial dataset assessment
+#   - Missing value treatment
+#   - Data standardization
+#   - Data validation
+#
+# Phase 2: Category Transformation
+#   - Brand-level category corrections
+#   - Product-level category classification
+#
+# Output:
+#   Accurate_Dataset.csv
 # ==========================================================
 
 import pandas as pd
 
 # ==========================================================
-# Load Dataset
+# Load Raw Dataset
 # ==========================================================
 
 file_path = r"C:\Users\rajsh\OneDrive\Desktop\Personal Project\Analytics Project\Flipkart Product Listings\flipkart Product.csv"
@@ -21,8 +30,12 @@ file_path = r"C:\Users\rajsh\OneDrive\Desktop\Personal Project\Analytics Project
 df = pd.read_csv(file_path)
 
 # ==========================================================
-# Initial Dataset Assessment
+# PHASE 1 : DATA PREPROCESSING
 # ==========================================================
+
+# ----------------------------------------------------------
+# Initial Dataset Assessment
+# ----------------------------------------------------------
 
 # Inspect dataset dimensions
 df.shape
@@ -33,47 +46,46 @@ df.info()
 # Generate descriptive statistics
 df.describe()
 
-# ==========================================================
+# ----------------------------------------------------------
 # Missing Value Treatment
-# ==========================================================
+# ----------------------------------------------------------
 
 # Inspect missing values
 df.isnull().sum()
 
 # Business Rule:
-# Missing product sizes are replaced using the mode
-# (most frequently occurring value).
+# Missing values in the 'size' column are replaced with
+# the mode (most frequently occurring value).
 
 df["size"] = df["size"].fillna(df["size"].mode()[0])
 
-# ==========================================================
+# ----------------------------------------------------------
 # Duplicate Validation
-# ==========================================================
+# ----------------------------------------------------------
 
 # Check for duplicate records.
-# No duplicate rows were identified.
 
 df.duplicated().sum()
 
-# ==========================================================
+# ----------------------------------------------------------
 # Data Standardization
-# ==========================================================
+# ----------------------------------------------------------
 
-# Standardize numeric precision
+# Standardize numeric precision.
 
 df["shipping_weight_g"] = df["shipping_weight_g"].round(2)
 
-# Replace commas with pipe symbols to simplify future
-# database imports and text parsing.
+# Replace commas with pipe symbols to simplify
+# future database imports and text parsing.
 
 df["payment_modes"] = df["payment_modes"].str.replace(",", "|")
 
-# ==========================================================
+# ----------------------------------------------------------
 # Numeric Data Validation
-# ==========================================================
+# ----------------------------------------------------------
 
-# Review the minimum and maximum values for every
-# numeric column to identify abnormal values.
+# Review minimum and maximum values for all numeric
+# columns to identify abnormal values.
 
 numeric_columns = df.select_dtypes(include="number")
 
@@ -95,10 +107,15 @@ for column in numeric_columns.columns:
 summary = pd.DataFrame(summary)
 
 # ==========================================================
-# Category Corrections
+# PHASE 2 : CATEGORY TRANSFORMATION
 # ==========================================================
 
-# Dedicated sports brands
+# ----------------------------------------------------------
+# Brand-Level Category Standardization
+# ----------------------------------------------------------
+
+# Products from dedicated sports brands are assigned
+# to the Sports category.
 
 sports_brands = [
     "Nike",
@@ -109,7 +126,8 @@ sports_brands = [
 
 df.loc[df["brand"].isin(sports_brands), "category"] = "Sports"
 
-# Dedicated electronics brands
+# Products from dedicated electronics brands are assigned
+# to the Electronics category.
 
 electronics_brands = [
     "Sony",
@@ -122,17 +140,17 @@ electronics_brands = [
 
 df.loc[df["brand"].isin(electronics_brands), "category"] = "Electronics"
 
-# Prestige products belong to Home & Kitchen
+# Prestige products belong to Home & Kitchen.
 
 df.loc[df["brand"] == "Prestige", "category"] = "Home & Kitchen"
 
-# ==========================================================
-# Multi-category Brand Classification
-# ==========================================================
+# ----------------------------------------------------------
+# Multi-Category Brand Classification
+# ----------------------------------------------------------
 
-# These brands manufacture products belonging to
-# multiple categories. Product names are therefore
-# used to determine the appropriate category.
+# Some brands manufacture products across multiple
+# categories. Product names are used to determine the
+# appropriate category.
 
 classification_rules = {
 
@@ -175,7 +193,7 @@ for brand, rules in classification_rules.items():
         ] = category
 
 # ==========================================================
-# Save Clean Dataset
+# Save Processed Dataset
 # ==========================================================
 
 output_path = r"C:\Users\rajsh\OneDrive\Desktop\Personal Project\Analytics Project\Flipkart Product Listings\Accurate_Dataset.csv"
