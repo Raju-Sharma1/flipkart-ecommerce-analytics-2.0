@@ -196,7 +196,7 @@ Samsung products span multiple categories and were classified using product name
 
 The following brands were standardized to a single category based on their primary product offerings.
 
-| Brand | Standardized Category |
+|Brand | Standardized Category |
 |--------|-----------------------|
 | Dell | Electronics |
 | Sony | Electronics |
