@@ -25,7 +25,7 @@ import pandas as pd
 # Load Raw Dataset
 # ==========================================================
 
-file_path = r"C:\Users\rajsh\OneDrive\Desktop\Personal Project\Analytics Project\Flipkart Product Listings\flipkart Product.csv"
+file_path = r"C:\Users\raju\Desktop\Personal Project\Analytics Project\Flipkart Product Listings\flipkart Product.csv"
 
 df = pd.read_csv(file_path)
 
@@ -259,6 +259,6 @@ flipkart.loc[flipkart['brand'] == 'LG', 'category'] = 'Electronics'
 # Save Processed Dataset
 # ==========================================================
 
-output_path = r"C:\Users\rajsh\OneDrive\Desktop\Personal Project\Analytics Project\Flipkart Product Listings\Accurate_Dataset.csv"
+output_path = r"C:\Users\raju\Desktop\Personal Project\Analytics Project\Flipkart Product Listings\Accurate_Dataset.csv"
 
 df.to_csv(output_path, index=False)
