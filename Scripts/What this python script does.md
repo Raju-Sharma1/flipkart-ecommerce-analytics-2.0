@@ -200,20 +200,6 @@ The cleaned dataset will be used for:
 
 ---
 
-# Repository Structure
-
-```
-Flipkart Analytics 2.0
-│
-├── Raw Dataset
-├── Data Cleaning & Transformation (Python)
-├── Accurate_Dataset.csv
-├── Excel Analysis
-├── SQL Analysis
-├── Power BI Dashboard
-└── README.md
-```
-
 ---
 
 # Author
