@@ -2,7 +2,7 @@
 
 Project Status
 
-### --> <<This project is currently under development.>>
+### --> This project is currently under development.
 
 The project follows a structured analytics pipeline, with each phase building upon the previous one.
 
