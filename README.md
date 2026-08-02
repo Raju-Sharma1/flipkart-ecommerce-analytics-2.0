@@ -7,7 +7,7 @@ Project Status
 The project follows a structured analytics pipeline, with each phase building upon the previous one.
 
 ## Project Progress
-### Completed
+### Completed---
 
 #### 1. Raw Data Clean-up *(Python)*
 
